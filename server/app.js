@@ -14,14 +14,36 @@ const taskRoutes = require('./routes/tasks');
 const app = express();
 
 // CORS middleware FIRST
+// Normalize helper to avoid trailing-slash and case issues
+const normalizeOrigin = (value) => {
+    if (!value) return value;
+    try {
+        const trimmed = value.replace(/\/$/, '');
+        return trimmed.toLowerCase();
+    } catch (_) {
+        return value;
+    }
+};
+
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'https://bloomtasks-frontend.onrender.com',
+    // 'http://localhost:5173', // keep for local dev
+]
+    .filter(Boolean)
+    .map(normalizeOrigin);
+
 app.use(cors({
-  // Local dev origin (keep for later use):
-  // origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  // Production frontend on Render:
-  origin: process.env.CLIENT_URL || 'https://bloomtasks-frontend.onrender.com',
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true); // allow non-browser requests
+        const normalized = normalizeOrigin(origin);
+        if (allowedOrigins.includes(normalized)) return callback(null, true);
+        return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204,
 }));
 
 // Middleware
