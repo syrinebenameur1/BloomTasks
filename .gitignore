@@ -1,0 +1,33 @@
+# Node dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Build output
+dist/
+client/dist/
+server/dist/
+
+# Runtime logs and OS/system files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Local env/secrets
+.env
+.env.local
+client/.env
+server/.env
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Optional: OS junk
+*.swp
+*.tmp
