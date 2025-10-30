@@ -15,7 +15,10 @@ const app = express();
 
 // CORS middleware FIRST
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  // Local dev origin (keep for later use):
+  // origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  // Production frontend on Render:
+  origin: process.env.CLIENT_URL || 'https://bloomtasks-frontend.onrender.com',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
